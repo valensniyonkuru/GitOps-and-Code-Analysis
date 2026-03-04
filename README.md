@@ -8,8 +8,8 @@ A security-hardened Jenkins pipeline deploying a Node.js application to AWS ECS 
 
 ### Jenkins Pipeline execution
 
-![Jenkins Pipeline - Build & Scan](screenshoots/jenkinsfirststages.png)
-![Jenkins Pipeline - Security & Deploy](screenshoots/jenkinlaststages.png)
+<img width="1875" height="630" alt="image" src="https://github.com/user-attachments/assets/10004258-651e-4b0f-9f99-ba35f948f8a8" />
+
 
 ### SonarQube Code Quality Analysis
 
