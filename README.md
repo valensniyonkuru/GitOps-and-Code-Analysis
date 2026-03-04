@@ -135,7 +135,7 @@ rm sonar-scanner-cli-5.0.1.3006-linux.zip
 # Restart Jenkins to apply Docker group
 sudo systemctl restart jenkins
 
-echo "✅ All tools installed successfully!"
+echo " All tools installed successfully!"
 echo "Run these commands to verify:"
 echo "  docker --version"
 echo "  node --version"
@@ -257,7 +257,7 @@ Generate token in SonarQube:
 
 **Where to put it in Jenkins:**
 
-📍 **SonarQube URL:**
+ **SonarQube URL:**
 1. **Manage Jenkins** → **Credentials** → **Add Credentials**
 2. Fill in:
    - **Kind:** Secret text
@@ -266,7 +266,7 @@ Generate token in SonarQube:
    - **ID:** `sonarqube-url`
    - **Description:** SonarQube Server URL
 
-📍 **SonarQube Token:**
+ **SonarQube Token:**
 1. **Manage Jenkins** → **Credentials** → **Add Credentials**
 2. Fill in:
    - **Kind:** Secret text
@@ -419,11 +419,11 @@ alb_dns_name = "secure-webapp-dev-alb-123456789.eu-north-1.elb.amazonaws.com"
 In Jenkins UI:
 1. Go to **Manage Jenkins** → **Plugins** → **Available plugins**
 2. Search and install:
-   - ✅ Docker Pipeline
-   - ✅ Pipeline: AWS Steps
-   - ✅ SonarQube Scanner
-   - ✅ Credentials Binding
-   - ✅ Pipeline Utility Steps
+   -  Docker Pipeline
+   -  Pipeline: AWS Steps
+   - SonarQube Scanner
+   - Credentials Binding
+   -  Pipeline Utility Steps
 3. Click **Install** and restart Jenkins
 
 ### Step 6: Add Credentials to Jenkins
@@ -441,7 +441,7 @@ Follow the [All Required Credentials](#-all-required-credentials) section above 
 3. Select **Pipeline** → Click **OK**
 4. Configure:
    - **General:**
-     - ✅ Do not allow concurrent builds
+     -  Do not allow concurrent builds
    - **Pipeline:**
      - Definition: **Pipeline script from SCM**
      - SCM: **Git**
@@ -462,8 +462,8 @@ Follow the [All Required Credentials](#-all-required-credentials) section above 
    - `AWS_REGION`: `eu-north-1`
    - `PROJECT_NAME`: `secure-webapp`
    - `ENVIRONMENT`: `dev`
-   - `SETUP_BACKEND`: ✅ (check this)
-   - `DEPLOY_INFRASTRUCTURE`: ✅ (check this)
+   - `SETUP_BACKEND`:  (check this)
+   - `DEPLOY_INFRASTRUCTURE`:  (check this)
 4. Click **Build**
 
 ### Subsequent Runs (Deploy Application Only)
@@ -473,8 +473,8 @@ Follow the [All Required Credentials](#-all-required-credentials) section above 
    - `AWS_REGION`: `eu-north-1`
    - `PROJECT_NAME`: `secure-webapp`
    - `ENVIRONMENT`: `dev`
-   - `SETUP_BACKEND`: ❌ (uncheck)
-   - `DEPLOY_INFRASTRUCTURE`: ❌ (uncheck)
+   - `SETUP_BACKEND`:  (uncheck)
+   - `DEPLOY_INFRASTRUCTURE`:  (uncheck)
 3. Click **Build**
 
 ### Pipeline Stages
@@ -582,7 +582,7 @@ echo 'const AWS_KEY = "AKIAIOSFODNN7EXAMPLE";' >> temp-test.js
 ### Test 4: Skip Security Gates (Emergency)
 
 Run pipeline with:
-- `SKIP_SECURITY_GATES`: ✅ (checked)
+- `SKIP_SECURITY_GATES`: (checked)
 
 **Expected:** Pipeline continues despite vulnerabilities (use with caution!)
 
@@ -696,51 +696,6 @@ docker rmi $(docker images | grep secure-webapp | awk '{print $3}')
 docker system prune -af
 ```
 
----
-
-## Architecture Diagram
-
-```
-┌─────────────────────────────────────────────────────────────────────────────────────┐
-│                              CI/CD PIPELINE ARCHITECTURE                             │
-├─────────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                      │
-│   ┌──────────┐     ┌──────────┐     ┌─────────────────────────────────────────┐     │
-│   │  GitHub  │────►│ Jenkins  │────►│           Security Scans                │     │
-│   │   Repo   │     │ Pipeline │     │  ┌─────────┬───────────┬─────────┐      │     │
-│   └──────────┘     └──────────┘     │  │Gitleaks │ SonarQube │  Snyk   │      │     │
-│                                      │  │(Secrets)│  (SAST)   │  (SCA)  │      │     │
-│                                      │  └────┬────┴─────┬─────┴────┬────┘      │     │
-│                                      └───────┼──────────┼──────────┼───────────┘     │
-│                                              │          │          │                 │
-│                                              ▼          ▼          ▼                 │
-│                                      ┌─────────────────────────────────┐             │
-│                                      │      SECURITY GATE (PASS/FAIL)  │             │
-│                                      └──────────────┬──────────────────┘             │
-│                                                     │                                │
-│                                                     ▼                                │
-│   ┌────────────────────────────────────────────────────────────────────────────┐    │
-│   │                           Container Build & Scan                            │    │
-│   │  ┌────────────┐     ┌────────────┐     ┌────────────┐     ┌────────────┐   │    │
-│   │  │   Docker   │────►│   Trivy    │────►│    Syft    │────►│ Container  │   │    │
-│   │  │   Build    │     │   Scan     │     │   (SBOM)   │     │   Gate     │   │    │
-│   │  └────────────┘     └────────────┘     └────────────┘     └──────┬─────┘   │    │
-│   └──────────────────────────────────────────────────────────────────┼─────────┘    │
-│                                                                       │              │
-│                                                                       ▼              │
-│   ┌────────────────────────────────────────────────────────────────────────────┐    │
-│   │                              AWS Deployment                                 │    │
-│   │  ┌────────────┐     ┌────────────┐     ┌────────────┐     ┌────────────┐   │    │
-│   │  │    ECR     │────►│    ECS     │────►│    ALB     │────►│ CloudWatch │   │    │
-│   │  │   Push     │     │  Fargate   │     │            │     │    Logs    │   │    │
-│   │  └────────────┘     └────────────┘     └────────────┘     └────────────┘   │    │
-│   └────────────────────────────────────────────────────────────────────────────┘    │
-│                                                                                      │
-└─────────────────────────────────────────────────────────────────────────────────────┘
-```
-
----
-
 ##  Quick Reference
 
 ### Jenkins Credentials
@@ -774,10 +729,4 @@ docker system prune -af
 
 ---
 
-## 📞 Support
 
-For issues:
-1. Check [Troubleshooting](#-troubleshooting) section
-2. Check Jenkins build logs
-3. Check AWS CloudWatch logs
-4. Open an issue on GitHub
