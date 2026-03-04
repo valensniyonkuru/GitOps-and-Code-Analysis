@@ -1,0 +1,8 @@
+# Trivy Ignore File
+# List CVEs to ignore (with justification)
+
+# Example format:
+# CVE-XXXX-XXXXX  # Reason for ignoring
+
+# No vulnerabilities are currently being ignored
+# Add CVEs here only after careful security review

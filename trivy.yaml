@@ -1,0 +1,62 @@
+# Trivy Configuration
+# Container image and filesystem scanning configuration
+
+# Severity levels to report
+severity:
+  - CRITICAL
+  - HIGH
+  - MEDIUM
+
+# Vulnerability types to scan
+vuln-type:
+  - os
+  - library
+
+# Security checks to perform
+security-checks:
+  - vuln
+  - config
+  - secret
+
+# Output format options
+format: json
+
+# Exit code configuration
+exit-code: 1
+
+# Ignore unfixed vulnerabilities
+ignore-unfixed: false
+
+# Skip directories
+skip-dirs:
+  - node_modules
+  - .git
+  - coverage
+  - security-reports
+  - sbom
+
+# Skip files
+skip-files:
+  - "**/*.md"
+  - "**/*.txt"
+
+# Cache directory
+cache-dir: /tmp/trivy-cache
+
+# Database configuration
+db:
+  repository: ghcr.io/aquasecurity/trivy-db
+  skip-update: false
+
+# Misconfiguration scanning
+misconfiguration:
+  scanners:
+    - dockerfile
+    - terraform
+
+# Secret scanning
+secret:
+  config: .gitleaks.toml
+
+# Custom ignore file
+ignorefile: .trivyignore

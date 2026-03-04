@@ -1,0 +1,26 @@
+# Snyk Policy File
+# Configuration for Snyk vulnerability scanning
+
+version: v1.25.0
+
+# Ignore specific vulnerabilities (with expiration and reason)
+ignore: {}
+  # Example:
+  # SNYK-JS-LODASH-567746:
+  #   - '*':
+  #       reason: 'No direct exposure in application'
+  #       expires: '2025-12-31T00:00:00.000Z'
+
+# Patch vulnerabilities when available
+patch: {}
+
+# Exclude paths from scanning
+exclude:
+  global:
+    - node_modules
+    - coverage
+    - security-reports
+    - sbom
+    - terraform-ecs
+    - "**/*.test.js"
+    - "**/*.spec.js"

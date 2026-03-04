@@ -1,0 +1,88 @@
+# Gitleaks Configuration
+# Secret detection rules for CI/CD pipeline
+
+title = "Gitleaks Configuration for Secure CI/CD Pipeline"
+
+[extend]
+# Use default gitleaks rules as baseline
+useDefault = true
+
+# Custom rules
+[[rules]]
+id = "aws-access-key"
+description = "AWS Access Key ID"
+regex = '''(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}'''
+tags = ["aws", "credentials"]
+
+[[rules]]
+id = "aws-secret-key"
+description = "AWS Secret Access Key"
+regex = '''(?i)aws_secret_access_key\s*=\s*['\"]?[A-Za-z0-9/+=]{40}['\"]?'''
+tags = ["aws", "credentials"]
+
+[[rules]]
+id = "mongodb-connection"
+description = "MongoDB Connection String"
+regex = '''mongodb(\+srv)?:\/\/[^\s'"]+'''
+tags = ["database", "credentials"]
+
+[[rules]]
+id = "jwt-secret"
+description = "JWT Secret Key"
+regex = '''(?i)(jwt[_-]?secret|jwt[_-]?key)\s*[=:]\s*['\"]?[A-Za-z0-9_\-]{20,}['\"]?'''
+tags = ["jwt", "credentials"]
+
+[[rules]]
+id = "generic-api-key"
+description = "Generic API Key"
+regex = '''(?i)(api[_-]?key|apikey)\s*[=:]\s*['\"]?[A-Za-z0-9_\-]{20,}['\"]?'''
+tags = ["api", "credentials"]
+
+[[rules]]
+id = "npm-token"
+description = "NPM Token"
+regex = '''(?i)npm[_-]?token\s*[=:]\s*['\"]?[A-Za-z0-9_\-]{36}['\"]?'''
+tags = ["npm", "credentials"]
+
+[[rules]]
+id = "docker-hub-token"
+description = "Docker Hub Token"
+regex = '''(?i)docker[_-]?(hub)?[_-]?(password|token|pat)\s*[=:]\s*['\"]?[A-Za-z0-9_\-]{20,}['\"]?'''
+tags = ["docker", "credentials"]
+
+[[rules]]
+id = "private-key"
+description = "Private Key"
+regex = '''-----BEGIN (RSA |EC |DSA |OPENSSH )?PRIVATE KEY-----'''
+tags = ["key", "credentials"]
+
+# Allowlist - files and paths to ignore
+[allowlist]
+description = "Global allowlist"
+paths = [
+    '''node_modules''',
+    '''\.git''',
+    '''coverage''',
+    '''security-reports''',
+    '''sbom''',
+    '''\.env\.example''',
+    '''terraform\.tfvars\.example''',
+    '''README\.md''',
+    '''docs'''
+]
+
+# Specific file patterns to ignore
+files = [
+    '''package-lock\.json''',
+    '''yarn\.lock''',
+    '''\.gitignore''',
+    '''\.dockerignore'''
+]
+
+# Regex patterns to ignore (false positives)
+regexes = [
+    '''EXAMPLE_''',
+    '''YOUR_.*_HERE''',
+    '''<.*>''',
+    '''placeholder'''
+]
