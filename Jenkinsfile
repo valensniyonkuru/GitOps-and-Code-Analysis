@@ -177,8 +177,6 @@ pipeline {
                                 // Run snyk test and capture status
                                 def result = sh(script: "snyk test --json --severity-threshold=high > ${REPORTS_DIR}/snyk.json || true", returnStatus: true)
                                 
-                                // Push 
-                                sh "snyk monitor --org=2e78cc76-63ee-4317-9f02-d94598be0d4c --project-name=${params.PROJECT_NAME}-${params.ENVIRONMENT}"
                                 
                                 env.SCA_VULNERABILITIES = result != 0 ? 'true' : 'false'
                                 echo "Snyk results pushed to dashboard."
