@@ -13,7 +13,8 @@ A security-hardened Jenkins pipeline deploying a Node.js application to AWS ECS 
 
 ### SonarQube Code Quality Analysis
 
-![SonarQube Dashboard](screenshoots/sonarqube.png)
+<img width="1918" height="955" alt="image" src="https://github.com/user-attachments/assets/b093c9e7-a4ee-46ff-854f-6eac4531d25e" />
+
 
 ### Security Reports & Dashboard
 
