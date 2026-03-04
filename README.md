@@ -16,13 +16,6 @@ A security-hardened Jenkins pipeline deploying a Node.js application to AWS ECS 
 <img width="1918" height="955" alt="image" src="https://github.com/user-attachments/assets/b093c9e7-a4ee-46ff-854f-6eac4531d25e" />
 
 
-### Security Reports & Dashboard
-
-![Snyk Vulnerability Scan](screenshoots/snyk.png)
-![Security Artifacts](screenshoots/artifacts.png)
-
----
-
 ##  Table of Contents
 
 0. [Project Screenshots](#-project-screenshots)
