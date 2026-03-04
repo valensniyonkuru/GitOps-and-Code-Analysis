@@ -16,19 +16,6 @@ A security-hardened Jenkins pipeline deploying a Node.js application to AWS ECS 
 <img width="1918" height="955" alt="image" src="https://github.com/user-attachments/assets/b093c9e7-a4ee-46ff-854f-6eac4531d25e" />
 
 
-##  Table of Contents
-
-0. [Project Screenshots](#-project-screenshots)
-1. [Quick Start](#-quick-start)
-2. [Prerequisites](#-prerequisites)
-3. [All Required Credentials](#-all-required-credentials)
-4. [Step-by-Step Setup](#-step-by-step-setup)
-5. [Running the Pipeline](#-running-the-pipeline)
-6. [Testing the Application](#-testing-the-application)
-7. [Security Gate Testing](#-security-gate-testing)
-8. [Troubleshooting](#-troubleshooting)
-9. [Cleanup](#-cleanup)
-
 ---
 
 ##  Quick Start
