@@ -31,6 +31,7 @@ pipeline {
     }
 
     stages {
+        // “The pipeline dynamically configures AWS environment to avoid manual configuration.”
         stage('Validate Parameters') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'aws-credentials', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
@@ -147,6 +148,13 @@ pipeline {
 
         stage('Security Scans') {
             parallel {
+                /* 
+                 Detects hardcoded secrets
+                 Outputs JSON report
+
+            This prevents API keys or credentials from reaching production
+            
+             */
                 stage('Secret Scan (Gitleaks)') {
                     steps {
                         script {
@@ -160,6 +168,13 @@ pipeline {
                         }
                     }
                 }
+
+                /* This enforces clean, secure code before deployment. 
+                    code smells
+                    Bugs
+                    security vulnerabilities
+                 code coverage 
+                */
                 stage('SAST (SonarQube)') {
                     steps {
                         script {
@@ -170,6 +185,10 @@ pipeline {
                         }
                     }
                 }
+                /*This protects against vulnerable third-party packages . 
+                    Open-source dependency vulnerabilities
+
+                */
                 stage('SCA (Snyk)') {
                     steps {
                         script {
@@ -192,7 +211,7 @@ pipeline {
                 sh 'npm test -- --coverage'
             }
         }
-
+        // Deployment only continues if code passes quality standards.
         stage('Quality Gate') {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
@@ -203,7 +222,7 @@ pipeline {
                 }
             }
         }
-
+// This enforces DevSecOps governance policies.
         stage('Security Gate') {
             steps {
                 script {
